@@ -12,7 +12,8 @@ export default defineConfig(({ mode }) => {
     plugins: [react()],
     define: {
       // Fix: Define process.env.API_KEY for client-side use, aligning with @google/genai guidelines.
-      'process.env.API_KEY': JSON.stringify(env.VITE_API_KEY)
+      // The environment likely provides API_KEY, not VITE_API_KEY.
+      'process.env.API_KEY': JSON.stringify(env.API_KEY)
     }
   }
 })
