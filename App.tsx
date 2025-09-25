@@ -150,7 +150,12 @@ function App() {
 
     } catch (err) {
       console.error(err);
-      setError('Ha ocurrido un error al contactar con la IA. Por favor, inténtalo de nuevo.');
+      if (err instanceof Error && err.message.startsWith("API_KEY_MISSING")) {
+        // Display a specific, helpful error message if the API key is the issue.
+        setError(err.message.split(': ')[1]);
+      } else {
+        setError('Ha ocurrido un error al contactar con la IA. Por favor, inténtalo de nuevo.');
+      }
     } finally {
       setIsLoading(false);
     }

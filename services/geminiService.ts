@@ -1,15 +1,23 @@
 import { GoogleGenAI } from "@google/genai";
 
-// Fix: Use process.env.API_KEY to align with Gemini API guidelines and resolve the TypeScript error.
-// The value is injected at build time via vite.config.ts.
-const apiKey = process.env.API_KEY;
-if (!apiKey) {
-  throw new Error("API_KEY is not defined. Please set it in your environment variables.");
+// Initialize the AI client directly with the environment variable as per the guidelines.
+// The API key's presence and validity will be checked before each API call.
+const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+
+/**
+ * Checks if the API key is available and valid.
+ * Throws a specific error if the key is missing or incorrectly injected.
+ */
+function checkApiKey() {
+  const apiKey = process.env.API_KEY;
+  if (!apiKey || apiKey === 'undefined' || apiKey.trim() === '') {
+    throw new Error("API_KEY_MISSING: La clave de la API de Gemini no está configurada. Por favor, revisa la configuración de tu entorno.");
+  }
 }
 
-const ai = new GoogleGenAI({ apiKey });
-
 export async function generateLinkedInPost(topic: string, generativeLinks: string[], pastedLinks: string[], topicDetails: string, wordCountRange: string): Promise<string> {
+  checkApiKey(); // Robust check before making the call
+
   const generativeLinksText = generativeLinks.length > 0 ? `Usa la información de las siguientes páginas como inspiración y para fundamentar el contenido: ${generativeLinks.join(', ')}.` : '';
   const pastedLinksText = pastedLinks.length > 0 ? `Al final de la publicación, justo antes de los hashtags, debes incluir la siguiente lista de enlaces sin modificarlos:\n${pastedLinks.join('\n')}` : '';
   const detailsText = topicDetails ? `Aquí hay detalles adicionales para ampliar el tema: "${topicDetails}".` : '';
@@ -82,6 +90,8 @@ export async function generateLinkedInPost(topic: string, generativeLinks: strin
 }
 
 export async function generateImageForPost(prompt: string): Promise<string> {
+  checkApiKey(); // Robust check before making the call
+
   const fullPrompt = `Una imagen profesional y moderna para una publicación de LinkedIn. El estilo debe ser limpio, minimalista y corporativo. Tema: ${prompt}`;
   
   try {
