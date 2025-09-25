@@ -1,11 +1,13 @@
 import { GoogleGenAI } from "@google/genai";
 
-// Fix: Use process.env.API_KEY as per coding guidelines to resolve TypeScript errors with import.meta.env and ensure correct API key handling.
-if (!process.env.API_KEY) {
+// FIX: Use `process.env.API_KEY` as per guidelines to access the API key. This resolves the TypeScript error and aligns with best practices.
+const apiKey = process.env.API_KEY;
+
+if (!apiKey) {
   throw new Error("API_KEY environment variable not set");
 }
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+const ai = new GoogleGenAI({ apiKey });
 
 export async function generateLinkedInPost(topic: string, generativeLinks: string[], pastedLinks: string[], topicDetails: string, wordCountRange: string): Promise<string> {
   const generativeLinksText = generativeLinks.length > 0 ? `Usa la información de las siguientes páginas como inspiración y para fundamentar el contenido: ${generativeLinks.join(', ')}.` : '';
@@ -37,11 +39,37 @@ export async function generateLinkedInPost(topic: string, generativeLinks: strin
   `;
   
   try {
+    // FIX: Implement Google Search grounding when generative links are provided. This fulfills the UI promise to search for information online and adheres to API guidelines.
+    const requestConfig: { tools?: any[] } = {};
+    if (generativeLinks.length > 0) {
+        requestConfig.tools = [{ googleSearch: {} }];
+    }
+
     const response = await ai.models.generateContent({
         model: 'gemini-2.5-flash',
         contents: prompt,
+        ...(Object.keys(requestConfig).length > 0 && { config: requestConfig }),
     });
-    return response.text;
+
+    let postText = response.text;
+
+    const groundingChunks = response.candidates?.[0]?.groundingMetadata?.groundingChunks;
+    if (groundingChunks && groundingChunks.length > 0) {
+        const sources = groundingChunks
+            .map((chunk: any) => chunk.web)
+            .filter(Boolean)
+            .filter((web: any, index: number, self: any[]) => 
+                index === self.findIndex((w: any) => w.uri === web.uri)
+            )
+            .map((web: any) => `- ${web.title}: ${web.uri}`);
+
+        if (sources.length > 0) {
+            postText += '\n\n---\nFuentes consultadas:\n' + sources.join('\n');
+        }
+    }
+    
+    return postText;
+
   } catch (error) {
     console.error("Error generating LinkedIn post:", error);
     throw new Error("Failed to generate text content.");
