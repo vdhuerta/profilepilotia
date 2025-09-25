@@ -26,11 +26,11 @@ function App() {
   const [topic, setTopic] = useState<string>(topics[0]);
   const [topicDetails, setTopicDetails] = useState<string>('');
   
-  const [generativeLinks, setGenerativeLinks] = useState<string[]>([]);
-  const [currentGenerativeLink, setCurrentGenerativeLink] = useState<string>('');
-
-  const [pastedLinks, setPastedLinks] = useState<string[]>([]);
-  const [currentPastedLink, setCurrentPastedLink] = useState<string>('');
+  // Temporarily disabled for debugging
+  // const [generativeLinks, setGenerativeLinks] = useState<string[]>([]);
+  // const [currentGenerativeLink, setCurrentGenerativeLink] = useState<string>('');
+  // const [pastedLinks, setPastedLinks] = useState<string[]>([]);
+  // const [currentPastedLink, setCurrentPastedLink] = useState<string>('');
 
   const [wordCountRange, setWordCountRange] = useState<string>(WORD_COUNT_RANGES[2]);
   const [imagePrompt, setImagePrompt] = useState<string>('');
@@ -75,6 +75,7 @@ function App() {
     }
   };
 
+  /* Temporarily disabled for debugging
   const handleAddLink = (type: 'generative' | 'pasted') => {
     const link = type === 'generative' ? currentGenerativeLink : currentPastedLink;
     const setLinks = type === 'generative' ? setGenerativeLinks : setPastedLinks;
@@ -98,6 +99,7 @@ function App() {
     const setLinks = type === 'generative' ? setGenerativeLinks : setPastedLinks;
     setLinks(links.filter(link => link !== linkToRemove));
   };
+  */
 
   const handleClearPost = () => {
     setGeneratedPost(null);
@@ -105,10 +107,10 @@ function App() {
     setWordCount(0);
     setTopic(topics[0]);
     setTopicDetails('');
-    setGenerativeLinks([]);
-    setCurrentGenerativeLink('');
-    setPastedLinks([]);
-    setCurrentPastedLink('');
+    // setGenerativeLinks([]);
+    // setCurrentGenerativeLink('');
+    // setPastedLinks([]);
+    // setCurrentPastedLink('');
     setImagePrompt('');
     setWordCountRange(WORD_COUNT_RANGES[2]);
     setError(null);
@@ -129,7 +131,8 @@ function App() {
 
     try {
       const [postResponse, imageResponse] = await Promise.all([
-        generateLinkedInPost(topic, generativeLinks, pastedLinks, topicDetails, wordCountRange),
+        // Pass empty arrays for links to simplify the API call for debugging
+        generateLinkedInPost(topic, [], [], topicDetails, wordCountRange),
         generateImageForPost(imagePrompt),
       ]);
       
@@ -144,7 +147,7 @@ function App() {
         image: imageResponse,
         topic: topic,
         timestamp: Date.now(),
-        generativeLinks: generativeLinks,
+        generativeLinks: [], // Pass empty array
         wordCount: count,
       };
       setHistory(prev => [newHistoryItem, ...prev]);
@@ -155,7 +158,7 @@ function App() {
     } finally {
       setIsLoading(false);
     }
-  }, [topic, generativeLinks, pastedLinks, imagePrompt, topicDetails, wordCountRange]);
+  }, [topic, imagePrompt, topicDetails, wordCountRange]);
   
   const handleCopyToClipboard = () => {
     if (generatedPost) {
@@ -337,6 +340,7 @@ function App() {
                 <NeumorphicTextarea id="topic-details" value={topicDetails} onChange={(e) => setTopicDetails(e.target.value)} placeholder="Añade detalles, ideas clave o un ángulo específico para la publicación..." rows={3}/>
               </div>
 
+              {/* Temporarily disabled for debugging
               <div>
                  <label htmlFor="generative-link-input" className="block text-sm font-medium mb-2">3. Añade Enlaces Generativos (opcional)</label>
                  <p className="text-xs text-slate-500 -mt-1 mb-2">La IA buscará información en estas páginas para enriquecer el contenido.</p>
@@ -370,16 +374,17 @@ function App() {
                   ))}
                 </div>
               </div>
+              */}
 
               <div>
-                <label htmlFor="word-count-range" className="block text-sm font-medium mb-2">5. Cantidad de Palabras</label>
+                <label htmlFor="word-count-range" className="block text-sm font-medium mb-2">3. Cantidad de Palabras</label>
                 <NeumorphicSelect id="word-count-range" value={wordCountRange} onChange={(e) => setWordCountRange(e.target.value)}>
                   {WORD_COUNT_RANGES.map(range => <option key={range} value={range}>{range}</option>)}
                 </NeumorphicSelect>
               </div>
 
               <div>
-                <label htmlFor="image-prompt" className="block text-sm font-medium mb-2">6. Describe la imagen deseada</label>
+                <label htmlFor="image-prompt" className="block text-sm font-medium mb-2">4. Describe la imagen deseada</label>
                 <NeumorphicInput id="image-prompt" type="text" value={imagePrompt} onChange={(e) => setImagePrompt(e.target.value)} placeholder="Ej: Un robot y un humano colaborando"/>
               </div>
 
