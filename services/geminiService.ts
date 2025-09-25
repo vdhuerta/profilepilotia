@@ -1,13 +1,8 @@
 import { GoogleGenAI } from "@google/genai";
 
-// FIX: Use `process.env.API_KEY` as per guidelines to access the API key. This resolves the TypeScript error and aligns with best practices.
-const apiKey = process.env.API_KEY;
-
-if (!apiKey) {
-  throw new Error("API_KEY environment variable not set");
-}
-
-const ai = new GoogleGenAI({ apiKey });
+// Fix: As per guidelines, initialize GoogleGenAI with process.env.API_KEY directly.
+// This also resolves the TypeScript error regarding 'import.meta.env'.
+const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
 export async function generateLinkedInPost(topic: string, generativeLinks: string[], pastedLinks: string[], topicDetails: string, wordCountRange: string): Promise<string> {
   const generativeLinksText = generativeLinks.length > 0 ? `Usa la información de las siguientes páginas como inspiración y para fundamentar el contenido: ${generativeLinks.join(', ')}.` : '';
@@ -39,7 +34,6 @@ export async function generateLinkedInPost(topic: string, generativeLinks: strin
   `;
   
   try {
-    // FIX: Implement Google Search grounding when generative links are provided. This fulfills the UI promise to search for information online and adheres to API guidelines.
     const requestConfig: { tools?: any[] } = {};
     if (generativeLinks.length > 0) {
         requestConfig.tools = [{ googleSearch: {} }];
