@@ -1,0 +1,6 @@
+
+{
+  "name": "ProfilePilot",
+  "description": "An AI agent that creates LinkedIn posts with a single click. Users can choose topics, add links, and generate posts with accompanying images to boost their professional presence.",
+  "requestFramePermissions": []
+}
