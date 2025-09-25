@@ -39,16 +39,22 @@ export async function generateLinkedInPost(topic: string, generativeLinks: strin
   `;
   
   try {
-    const requestConfig: { tools?: any[] } = {};
-    if (generativeLinks.length > 0) {
-        requestConfig.tools = [{ googleSearch: {} }];
-    }
+    let response;
 
-    const response = await ai.models.generateContent({
-        model: 'gemini-2.5-flash',
-        contents: prompt,
-        ...(Object.keys(requestConfig).length > 0 && { config: requestConfig }),
-    });
+    if (generativeLinks.length > 0) {
+        response = await ai.models.generateContent({
+            model: 'gemini-2.5-flash',
+            contents: prompt,
+            config: {
+                tools: [{ googleSearch: {} }],
+            },
+        });
+    } else {
+        response = await ai.models.generateContent({
+            model: 'gemini-2.5-flash',
+            contents: prompt,
+        });
+    }
 
     let postText = response.text;
 
