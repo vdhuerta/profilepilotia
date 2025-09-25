@@ -1,7 +1,6 @@
 import { GoogleGenAI } from "@google/genai";
 
-// Fix: As per guidelines, initialize GoogleGenAI with process.env.API_KEY directly.
-// This also resolves the TypeScript error regarding 'import.meta.env'.
+// Fix: Replaced `import.meta.env.VITE_API_KEY` with `process.env.API_KEY` to align with the coding guidelines and resolve the TypeScript error.
 const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
 export async function generateLinkedInPost(topic: string, generativeLinks: string[], pastedLinks: string[], topicDetails: string, wordCountRange: string): Promise<string> {
