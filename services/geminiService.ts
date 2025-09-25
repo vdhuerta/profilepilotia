@@ -1,7 +1,13 @@
 import { GoogleGenAI } from "@google/genai";
 
-// Fix: Replaced `import.meta.env.VITE_API_KEY` with `process.env.API_KEY` to align with the coding guidelines and resolve the TypeScript error.
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+// Fix: Use process.env.API_KEY to align with Gemini API guidelines and resolve the TypeScript error.
+// The value is injected at build time via vite.config.ts.
+const apiKey = process.env.API_KEY;
+if (!apiKey) {
+  throw new Error("API_KEY is not defined. Please set it in your environment variables.");
+}
+
+const ai = new GoogleGenAI({ apiKey });
 
 export async function generateLinkedInPost(topic: string, generativeLinks: string[], pastedLinks: string[], topicDetails: string, wordCountRange: string): Promise<string> {
   const generativeLinksText = generativeLinks.length > 0 ? `Usa la información de las siguientes páginas como inspiración y para fundamentar el contenido: ${generativeLinks.join(', ')}.` : '';
