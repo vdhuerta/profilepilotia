@@ -1,6 +1,9 @@
 import { GoogleGenAI } from "@google/genai";
 import { FormData } from '../types';
 
+// Fix: Use process.env.API_KEY as per guidelines.
+// This resolves the TypeScript error with 'import.meta.env' and aligns with project requirements.
+// The value is replaced by Vite during the build process.
 if (!process.env.API_KEY) {
   throw new Error("API_KEY environment variable not set");
 }
