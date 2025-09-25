@@ -1,18 +1,16 @@
-export const TOPICS: string[] = [
-  "Inteligencia Artificial en Educación",
+
+export const THEMES = [
+  "Inteligencia Artificial en la Educación",
   "Tecnologías Emergentes",
   "Innovación Pedagógica con IA",
   "Ubicuidad en el Aprendizaje",
-  "Futuro del Trabajo y la Educación",
-  "Ética en la Inteligencia Artificial",
-  "Transformación Digital en Empresas"
+  "Futuro de la Educación con IA",
+  "Ética Responsable al usar IA",
+  "Transformación Digital en la Educación",
 ];
 
-export const WORD_COUNT_RANGES: string[] = [
-  "Entre 50 y 100",
-  "Entre 100 y 150",
-  "Entre 150 y 200",
-  "Entre 200 y 250",
-  "Entre 250 y 300",
-  "Entre 300 y 350",
+export const WORD_COUNTS = [
+  "Breve (50-100 palabras)",
+  "Estándar (150-200 palabras)",
+  "Detallado (250-300 palabras)",
 ];
