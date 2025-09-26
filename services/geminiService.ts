@@ -73,32 +73,38 @@ IMPORTANTE: Responde únicamente con el texto de la publicación. No incluyas en
     
     const generatedText = textResponse.text;
 
-    // Part 2: Generate Image using Google Imagen
+    // Part 2: Generate Image (Optional and gracefully handled)
     let imageUrl: string | null = null;
-    
-    const imageModel = 'imagen-4.0-generate-001';
-    const imageResponse = await ai.models.generateImages({
-      model: imageModel,
-      prompt: formData.imageDescription,
-      config: {
-        numberOfImages: 1,
-        outputMimeType: 'image/jpeg',
-        aspectRatio: '16:9',
-      },
-    });
-    
-    const base64ImageBytes = imageResponse.generatedImages?.[0]?.image?.imageBytes;
-    if (!base64ImageBytes) {
-      throw new Error("La respuesta de Google Imagen no contenía datos de imagen válidos.");
+    if (formData.imageDescription) {
+      try {
+        const imageModel = 'imagen-4.0-generate-001';
+        const imageResponse = await ai.models.generateImages({
+          model: imageModel,
+          prompt: formData.imageDescription,
+          config: {
+            numberOfImages: 1,
+            outputMimeType: 'image/jpeg',
+            aspectRatio: '16:9',
+          },
+        });
+        
+        const base64ImageBytes = imageResponse.generatedImages?.[0]?.image?.imageBytes;
+        if (base64ImageBytes) {
+          imageUrl = `data:image/jpeg;base64,${base64ImageBytes}`;
+        } else {
+          console.warn("La respuesta de Google Imagen no contenía datos de imagen válidos.");
+        }
+      } catch (imageError) {
+        console.error("Error al generar la imagen (continuando con solo texto):", imageError);
+        // Image generation failed, but we proceed with the text. imageUrl is already null.
+      }
     }
-    imageUrl = `data:image/jpeg;base64,${base64ImageBytes}`;
     
     return { text: generatedText, imageUrl };
 
   } catch (error) {
-    console.error("Error generating content:", error);
+    console.error("Error generating text content:", error);
     if (error instanceof Error) {
-      // This will now catch text generation or a detailed image generation error
       throw new Error(`Error con la API de IA: ${error.message}`);
     }
     throw new Error("Un error desconocido ocurrió durante la generación de contenido.");

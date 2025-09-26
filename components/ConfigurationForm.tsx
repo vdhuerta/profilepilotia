@@ -176,7 +176,7 @@ const ConfigurationForm: React.FC<ConfigurationFormProps> = ({ onGenerate, isLoa
         
         {/* 6. Image Description */}
         <div className="space-y-2">
-          <label htmlFor="imageDescription" className="font-semibold text-slate-600">6. Descripción de la Imagen (Obligatorio)</label>
+          <label htmlFor="imageDescription" className="font-semibold text-slate-600">6. Descripción de la Imagen (Opcional)</label>
           <input type="text" id="imageDescription" name="imageDescription" value={formData.imageDescription} onChange={handleInputChange} placeholder="Ej: Un robot amigable ayudando a un niño con sus deberes" className="w-full bg-slate-100 rounded-lg p-3 focus:outline-none shadow-[inset_4px_4px_8px_#c5c5c5,inset_-4px_-4px_8px_#ffffff]" />
         </div>
         
@@ -194,7 +194,7 @@ const ConfigurationForm: React.FC<ConfigurationFormProps> = ({ onGenerate, isLoa
           </button>
           <button 
             type="submit" 
-            disabled={!formData.imageDescription || isLoading} 
+            disabled={!formData.theme || isLoading} 
             className="w-full sm:w-3/5 text-lg font-bold text-slate-700 py-4 rounded-lg bg-slate-200 transition-all duration-200 ease-in-out
                        shadow-[8px_8px_16px_#c5c5c5,_-8px_-8px_16px_#ffffff] 
                        active:shadow-[inset_8px_8px_16px_#c5c5c5,inset_-8px_-8px_16px_#ffffff]
