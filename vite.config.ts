@@ -10,7 +10,5 @@ export default defineConfig({
   // and aligns with the guideline to use process.env in the application code.
   define: {
     'process.env.API_KEY': process.env.VITE_API_KEY ? JSON.stringify(process.env.VITE_API_KEY) : 'undefined',
-    'process.env.KLING_ACCESS_KEY': process.env.VITE_KLING_ACCESS_KEY ? JSON.stringify(process.env.VITE_KLING_ACCESS_KEY) : 'undefined',
-    'process.env.KLING_SECRET_KEY': process.env.VITE_KLING_SECRET_KEY ? JSON.stringify(process.env.VITE_KLING_SECRET_KEY) : 'undefined',
   },
 })

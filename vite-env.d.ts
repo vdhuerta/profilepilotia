@@ -5,7 +5,5 @@
 declare namespace NodeJS {
   interface ProcessEnv {
     API_KEY: string;
-    KLING_ACCESS_KEY: string;
-    KLING_SECRET_KEY: string;
   }
 }

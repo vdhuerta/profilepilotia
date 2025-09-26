@@ -20,7 +20,6 @@ const ConfigurationForm: React.FC<ConfigurationFormProps> = ({ onGenerate, isLoa
     generativeLinks: [],
     pasteLinks: [],
     wordCount: WORD_COUNTS[1],
-    imageService: 'google',
     imageDescription: '',
   });
 
@@ -58,6 +57,19 @@ const ConfigurationForm: React.FC<ConfigurationFormProps> = ({ onGenerate, isLoa
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onGenerate(formData);
+  };
+
+  const handleClearForm = () => {
+    setFormData({
+      theme: themes[0],
+      details: '',
+      generativeLinks: [],
+      pasteLinks: [],
+      wordCount: WORD_COUNTS[1],
+      imageDescription: '',
+    });
+    setCurrentGenerativeLink('');
+    setCurrentPasteLink('');
   };
 
   return (
@@ -144,38 +156,36 @@ const ConfigurationForm: React.FC<ConfigurationFormProps> = ({ onGenerate, isLoa
           </div>
         </div>
         
-        {/* 6. Image Service */}
+        {/* 6. Image Description */}
         <div className="space-y-2">
-          <label htmlFor="imageService" className="font-semibold text-slate-600">6. Servicio de Imagen</label>
-          <div className="relative">
-            <select id="imageService" name="imageService" value={formData.imageService} onChange={handleInputChange} className="w-full bg-slate-100 rounded-lg p-3 pr-10 focus:outline-none shadow-[inset_4px_4px_8px_#c5c5c5,inset_-4px_-4px_8px_#ffffff] appearance-none">
-              <option value="google">Google Imagen 4.0</option>
-              <option value="klingai">Kling AI</option>
-            </select>
-            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-500">
-                <i className="fas fa-chevron-down"></i>
-            </div>
-          </div>
-        </div>
-
-        {/* 7. Image Description */}
-        <div className="space-y-2">
-          <label htmlFor="imageDescription" className="font-semibold text-slate-600">7. Descripción de la Imagen (Obligatorio)</label>
+          <label htmlFor="imageDescription" className="font-semibold text-slate-600">6. Descripción de la Imagen (Obligatorio)</label>
           <input type="text" id="imageDescription" name="imageDescription" value={formData.imageDescription} onChange={handleInputChange} placeholder="Ej: Un robot amigable ayudando a un niño con sus deberes" className="w-full bg-slate-100 rounded-lg p-3 focus:outline-none shadow-[inset_4px_4px_8px_#c5c5c5,inset_-4px_-4px_8px_#ffffff]" />
         </div>
         
-        {/* 8. Action Button */}
-        <button 
-          type="submit" 
-          disabled={!formData.imageDescription || isLoading} 
-          className="w-full text-lg font-bold text-slate-700 py-4 rounded-lg bg-slate-200 transition-all duration-200 ease-in-out
-                     shadow-[8px_8px_16px_#c5c5c5,_-8px_-8px_16px_#ffffff] 
-                     active:shadow-[inset_8px_8px_16px_#c5c5c5,inset_-8px_-8px_16px_#ffffff]
-                     disabled:opacity-50 disabled:cursor-not-allowed disabled:active:shadow-[8px_8px_16px_#c5c5c5,_-8px_-8px_16px_#ffffff]">
-          {isLoading ? 'Generando...' : 'Generar Publicación'}
-        </button>
+        {/* 7. Action Buttons */}
+        <div className="flex flex-col sm:flex-row gap-4 pt-2">
+          <button 
+            type="button" 
+            onClick={handleClearForm}
+            disabled={isLoading} 
+            className="w-full sm:w-2/5 text-lg font-bold text-slate-600 py-4 rounded-lg bg-slate-200 transition-all duration-200 ease-in-out
+                       shadow-[8px_8px_16px_#c5c5c5,_-8px_-8px_16px_#ffffff] 
+                       active:shadow-[inset_8px_8px_16px_#c5c5c5,inset_-8px_-8px_16px_#ffffff]
+                       disabled:opacity-50 disabled:cursor-not-allowed disabled:active:shadow-[8px_8px_16px_#c5c5c5,_-8px_-8px_16px_#ffffff]">
+            Limpiar
+          </button>
+          <button 
+            type="submit" 
+            disabled={!formData.imageDescription || isLoading} 
+            className="w-full sm:w-3/5 text-lg font-bold text-slate-700 py-4 rounded-lg bg-slate-200 transition-all duration-200 ease-in-out
+                       shadow-[8px_8px_16px_#c5c5c5,_-8px_-8px_16px_#ffffff] 
+                       active:shadow-[inset_8px_8px_16px_#c5c5c5,inset_-8px_-8px_16px_#ffffff]
+                       disabled:opacity-50 disabled:cursor-not-allowed disabled:active:shadow-[8px_8px_16px_#c5c5c5,_-8px_-8px_16px_#ffffff]">
+            {isLoading ? 'Generando...' : 'Generar Publicación'}
+          </button>
+        </div>
 
-        {/* 9. Error Zone */}
+        {/* 8. Error Zone */}
         {error && <p className="text-red-500 text-center font-medium">{error}</p>}
       </form>
     </NeumorphicCard>
