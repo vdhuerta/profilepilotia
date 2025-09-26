@@ -64,7 +64,7 @@ const ResultsDisplay: React.FC<ResultsDisplayProps> = ({ isLoading, result, onCl
             <div className="mb-4 flex-shrink-0 w-full aspect-video rounded-lg bg-slate-200 flex flex-col items-center justify-center p-4 text-center shadow-[inset_4px_4px_8px_#c5c5c5,inset_-4px_-4px_8px_#ffffff]">
               <i className="fas fa-exclamation-triangle text-3xl text-amber-500 mb-2"></i>
               <p className="text-sm font-semibold text-slate-600">Error al generar la imagen.</p>
-              <p className="text-xs text-slate-500">Es posible que tu cuenta de API no tenga la facturación habilitada para este servicio.</p>
+              <p className="text-xs text-slate-500">La generación de la imagen falló. Revisa la configuración del servicio y tu clave de API.</p>
             </div>
           )}
 

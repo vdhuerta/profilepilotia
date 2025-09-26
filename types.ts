@@ -17,5 +17,6 @@ export interface FormData {
   generativeLinks: string[];
   pasteLinks: string[];
   wordCount: string;
+  imageService: 'google' | 'klingai';
   imageDescription: string;
 }
