@@ -111,7 +111,16 @@ const ConfigurationForm: React.FC<ConfigurationFormProps> = ({ onGenerate, isLoa
 
         {/* 3. Generative Links */}
         <div className="space-y-2">
-          <label className="font-semibold text-slate-600">3. Enlaces Generativos (Opcional)</label>
+            <div className="flex items-center gap-2">
+                <label className="font-semibold text-slate-600">3. Enlaces Generativos (Opcional)</label>
+                <div className="relative group flex items-center">
+                    <i className="fas fa-question-circle text-slate-400 cursor-help"></i>
+                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-72 p-3 bg-slate-800 text-white text-sm rounded-lg shadow-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-10">
+                        Usa estos enlaces para que la IA busque información en la web y base la publicación en su contenido. Ideal para noticias o artículos recientes.
+                        <div className="absolute left-1/2 -translate-x-1/2 top-full w-0 h-0 border-x-8 border-x-transparent border-t-8 border-t-slate-800"></div>
+                    </div>
+                </div>
+            </div>
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
             <input type="url" value={currentGenerativeLink} onChange={(e) => setCurrentGenerativeLink(e.target.value)} placeholder="https://ejemplo.com" className="flex-grow w-full bg-slate-100 rounded-lg p-3 focus:outline-none shadow-[inset_4px_4px_8px_#c5c5c5,inset_-4px_-4px_8px_#ffffff]" />
             <button type="button" onClick={() => addLink('generativeLinks')} className="flex-shrink-0 px-4 py-2 bg-slate-200 rounded-lg shadow-[4px_4px_8px_#c5c5c5,_-4px_-4px_8px_#ffffff] active:shadow-[inset_4px_4px_8px_#c5c5c5,inset_-4px_-4px_8px_#ffffff]">Añadir</button>
@@ -128,7 +137,16 @@ const ConfigurationForm: React.FC<ConfigurationFormProps> = ({ onGenerate, isLoa
         
         {/* 4. Paste Links */}
         <div className="space-y-2">
-          <label className="font-semibold text-slate-600">4. Enlaces a Pegar (Opcional)</label>
+            <div className="flex items-center gap-2">
+                <label className="font-semibold text-slate-600">4. Enlaces a Pegar (Opcional)</label>
+                <div className="relative group flex items-center">
+                    <i className="fas fa-question-circle text-slate-400 cursor-help"></i>
+                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-72 p-3 bg-slate-800 text-white text-sm rounded-lg shadow-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-10">
+                        Estos enlaces se añadirán directamente al final de tu publicación. Úsalos para dirigir tráfico a tu portafolio, blog, etc.
+                        <div className="absolute left-1/2 -translate-x-1/2 top-full w-0 h-0 border-x-8 border-x-transparent border-t-8 border-t-slate-800"></div>
+                    </div>
+                </div>
+            </div>
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
             <input type="url" value={currentPasteLink} onChange={(e) => setCurrentPasteLink(e.target.value)} placeholder="https://mi-portfolio.com" className="flex-grow w-full bg-slate-100 rounded-lg p-3 focus:outline-none shadow-[inset_4px_4px_8px_#c5c5c5,inset_-4px_-4px_8px_#ffffff]" />
             <button type="button" onClick={() => addLink('pasteLinks')} className="flex-shrink-0 px-4 py-2 bg-slate-200 rounded-lg shadow-[4px_4px_8px_#c5c5c5,_-4px_-4px_8px_#ffffff] active:shadow-[inset_4px_4px_8px_#c5c5c5,inset_-4px_-4px_8px_#ffffff]">Añadir</button>
