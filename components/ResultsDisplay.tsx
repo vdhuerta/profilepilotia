@@ -68,7 +68,7 @@ const ResultsDisplay: React.FC<ResultsDisplayProps> = ({ isLoading, result, onCl
             </div>
           )}
 
-          <div className="relative flex-grow mb-4">
+          <div className="relative flex-grow mb-4 min-h-[14rem]">
             <div className="absolute inset-0 bg-slate-100 rounded-lg p-3 pr-14 text-slate-800 overflow-y-auto whitespace-pre-wrap shadow-[inset_4px_4px_8px_#c5c5c5,inset_-4px_-4px_8px_#ffffff]">
               {result.text}
             </div>
