@@ -39,6 +39,7 @@ IMPORTANTE: Responde únicamente con el texto de la publicación. No incluyas en
 
 export const generateContent = async (formData: FormData) => {
   try {
+    // Part 1: Generate Text
     const textModel = 'gemini-2.5-flash';
     let textResponse;
 
@@ -59,26 +60,33 @@ export const generateContent = async (formData: FormData) => {
     
     const generatedText = textResponse.text;
 
-    // Generate Image
-    const imageModel = 'imagen-4.0-generate-001';
-    const imageResponse = await ai.models.generateImages({
-      model: imageModel,
-      prompt: formData.imageDescription,
-      config: {
-        numberOfImages: 1,
-        outputMimeType: 'image/jpeg',
-        aspectRatio: '16:9',
-      },
-    });
+    // Part 2: Attempt to Generate Image
+    let imageUrl: string | null = null;
+    try {
+      const imageModel = 'imagen-4.0-generate-001';
+      const imageResponse = await ai.models.generateImages({
+        model: imageModel,
+        prompt: formData.imageDescription,
+        config: {
+          numberOfImages: 1,
+          outputMimeType: 'image/jpeg',
+          aspectRatio: '16:9',
+        },
+      });
 
-    const base64ImageBytes = imageResponse.generatedImages[0].image.imageBytes;
-    const imageUrl = `data:image/jpeg;base64,${base64ImageBytes}`;
+      const base64ImageBytes = imageResponse.generatedImages[0].image.imageBytes;
+      imageUrl = `data:image/jpeg;base64,${base64ImageBytes}`;
+    } catch (imageError) {
+        console.warn("Image generation failed, proceeding without an image. This could be a billing issue.", imageError);
+        // The function will continue and return imageUrl as null
+    }
     
     return { text: generatedText, imageUrl };
 
   } catch (error) {
     console.error("Error generating content:", error);
     if (error instanceof Error) {
+      // This will now primarily catch text generation errors
       throw new Error(`Error con la API de IA: ${error.message}`);
     }
     throw new Error("Un error desconocido ocurrió durante la generación de contenido.");

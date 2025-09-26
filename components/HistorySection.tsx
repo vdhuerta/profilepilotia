@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { HistoryItem } from '../types';
 import NeumorphicCard from './NeumorphicCard';
@@ -60,7 +59,7 @@ const HistorySection: React.FC<HistorySectionProps> = ({ history, setHistory }) 
           <h1>Mi Portafolio Generado</h1>
           ${itemsToExport.map(item => `
             <div class="post">
-                <img class="post-image" src="${item.imageUrl}" alt="Imagen para ${item.theme}">
+                ${item.imageUrl ? `<img class="post-image" src="${item.imageUrl}" alt="Imagen para ${item.theme}">` : ''}
                 <div class="post-content">
                     <h2>${item.theme}</h2>
                     <p>${item.text.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</p>
@@ -122,11 +121,17 @@ const HistorySection: React.FC<HistorySectionProps> = ({ history, setHistory }) 
                         />
                       </div>
                       
-                      <img
-                        src={item.imageUrl}
-                        alt={item.theme}
-                        className="w-full sm:w-40 md:w-48 sm:h-auto aspect-[16/9] object-cover rounded-lg flex-shrink-0"
-                      />
+                      {item.imageUrl ? (
+                         <img
+                          src={item.imageUrl}
+                          alt={item.theme}
+                          className="w-full sm:w-40 md:w-48 sm:h-auto aspect-[16/9] object-cover rounded-lg flex-shrink-0"
+                        />
+                      ) : (
+                        <div className="w-full sm:w-40 md:w-48 h-auto aspect-[16/9] bg-slate-200 rounded-lg flex-shrink-0 flex items-center justify-center">
+                            <i className="fas fa-image-slash text-3xl text-slate-400"></i>
+                        </div>
+                      )}
                       
                       <div className="flex-grow w-full text-left sm:text-left self-start sm:self-center">
                         <h3 className="font-bold text-slate-700">{item.theme}</h3>

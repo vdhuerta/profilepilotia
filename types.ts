@@ -1,7 +1,7 @@
 
 export interface GeneratedPost {
   text: string;
-  imageUrl: string;
+  imageUrl: string | null;
   wordCount: number;
 }
 

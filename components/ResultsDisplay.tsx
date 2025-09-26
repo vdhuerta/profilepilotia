@@ -24,7 +24,7 @@ const ResultsDisplay: React.FC<ResultsDisplayProps> = ({ isLoading, result, onCl
   };
 
   const handleDownload = () => {
-    if (result) {
+    if (result && result.imageUrl) {
       const link = document.createElement('a');
       link.href = result.imageUrl;
       link.download = 'generated-image.jpg';
@@ -48,16 +48,26 @@ const ResultsDisplay: React.FC<ResultsDisplayProps> = ({ isLoading, result, onCl
       <NeumorphicCard className="h-full">
         <div className="flex flex-col h-full">
           <h2 className="text-2xl font-bold text-slate-700 mb-4 flex-shrink-0">Resultado Generado</h2>
-          <div className="relative group mb-4 flex-shrink-0">
-            <img src={result.imageUrl} alt="Generated content" className="w-full aspect-video object-cover rounded-lg"/>
-            <button 
-              onClick={handleDownload} 
-              className="absolute top-3 right-3 bg-black bg-opacity-60 text-white w-10 h-10 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-opacity-80"
-              aria-label="Descargar imagen"
-            >
-              <i className="fas fa-download"></i>
-            </button>
-          </div>
+          
+          {result.imageUrl ? (
+            <div className="relative group mb-4 flex-shrink-0">
+              <img src={result.imageUrl} alt="Generated content" className="w-full aspect-video object-cover rounded-lg"/>
+              <button 
+                onClick={handleDownload} 
+                className="absolute top-3 right-3 bg-black bg-opacity-60 text-white w-10 h-10 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-opacity-80"
+                aria-label="Descargar imagen"
+              >
+                <i className="fas fa-download"></i>
+              </button>
+            </div>
+          ) : (
+            <div className="mb-4 flex-shrink-0 w-full aspect-video rounded-lg bg-slate-200 flex flex-col items-center justify-center p-4 text-center shadow-[inset_4px_4px_8px_#c5c5c5,inset_-4px_-4px_8px_#ffffff]">
+              <i className="fas fa-exclamation-triangle text-3xl text-amber-500 mb-2"></i>
+              <p className="text-sm font-semibold text-slate-600">Error al generar la imagen.</p>
+              <p className="text-xs text-slate-500">Es posible que tu cuenta de API no tenga la facturación habilitada para este servicio.</p>
+            </div>
+          )}
+
           <div className="relative flex-grow mb-4">
             <div className="absolute inset-0 bg-slate-100 rounded-lg p-3 pr-14 text-slate-800 overflow-y-auto whitespace-pre-wrap shadow-[inset_4px_4px_8px_#c5c5c5,inset_-4px_-4px_8px_#ffffff]">
               {result.text}
